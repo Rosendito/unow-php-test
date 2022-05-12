@@ -195,7 +195,7 @@ class Database
         $this->prepare($query);
 
         foreach ($whereValues as $param => $value) {
-            $this->bindParam($param, $value);
+            $this->bindParam(":{$param}", $value);
         }
 
         return $this;
@@ -236,7 +236,7 @@ class Database
         $fieldDetails = null;
 
         foreach ($data as $key => $value) {
-            $fieldDetails .= "{$key} = :{$key}";
+            $fieldDetails .= "{$key} = :{$key},";
         }
 
         $fieldDetails = rtrim($fieldDetails, ',');
@@ -250,7 +250,7 @@ class Database
         }
 
         foreach ($whereValues as $param => $value) {
-            $this->bindParam($param, $value);
+            $this->bindParam(":{$param}", $value);
         }
 
         $this->execute();

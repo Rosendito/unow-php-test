@@ -79,7 +79,7 @@ class Model
      * @param array $data
      * @return array
      */
-    public function prepareData(array $data): array
+    protected function prepareData(array $data): array
     {
         $preparedData = [];
 
@@ -100,7 +100,13 @@ class Model
      */
     public function create(array $data): self
     {
-        $id = $this->database->insert($this->table, $data);
+        $data['created_at'] = date('Y-m-d h:i:s');
+        $data['updated_at'] = date('Y-m-d h:i:s');
+
+        $id = $this->database->insert(
+            $this->table,
+            $this->prepareData($data)
+        );
         $row = $this->findRow($id);
 
         $this->fillData($row);
@@ -135,6 +141,26 @@ class Model
     {
         $row = $this->findRow($id);
         $this->fillData($row);
+
+        return $this;
+    }
+
+    /**
+     * Update model.
+     *
+     * @param array $data
+     * @return self
+     */
+    public function update(array $data): self
+    {
+        $data['updated_at'] = date('Y-m-d h:i:s');
+        
+        $this->database->update(
+            $this->table,
+            $this->prepareData($data),
+            'id = :id',
+            ['id' => $this->id]
+        );
 
         return $this;
     }
