@@ -206,9 +206,9 @@ class Database
      *
      * @param string $table
      * @param array $data
-     * @return self
+     * @return int
      */
-    public function insert(string $table, array $data): void
+    public function insert(string $table, array $data): int
     {
         $fieldNames = implode(',', array_keys($data));
         $fieldValues = ':' . implode(', :', array_keys($data));
@@ -222,6 +222,8 @@ class Database
         }
 
         $this->execute();
+
+        return $this->handler->lastInsertId();
     }
 
     public function update(
