@@ -224,6 +224,36 @@ class Database
         $this->execute();
     }
 
+    public function update(
+        string $table,
+        array $data,
+        string $where = '',
+        array $whereValues = []
+    ): void
+    {
+        $fieldDetails = null;
+
+        foreach ($data as $key => $value) {
+            $fieldDetails .= "{$key} = :{$key}";
+        }
+
+        $fieldDetails = rtrim($fieldDetails, ',');
+
+        $query = "UPDATE {$table} SET {$fieldDetails}" . ($where ? ' WHERE ' . $where : '');
+
+        $this->prepare($query);
+
+        foreach ($data as $key => $value) {
+            $this->bindValue(":{$key}", $value);
+        }
+
+        foreach ($whereValues as $param => $value) {
+            $this->bindParam($param, $value);
+        }
+
+        $this->execute();
+    }
+
     /**
      * Get results from the current statement.
      *
