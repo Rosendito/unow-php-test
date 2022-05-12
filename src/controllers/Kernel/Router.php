@@ -58,7 +58,7 @@ class Router
      */
     private function formatRoute(string $route): string
     {
-        $result = rtrim($route, '/');
+        $result = rtrim(preg_replace('/\?.*/', '', $route), '/');
 
         if ($result === '') {
             return '/';
@@ -101,6 +101,8 @@ class Router
             $this->defaultRequestHandler();
             return;
         }
+
+        header('Content-Type: application/json; charset=utf-8');
 
         echo call_user_func_array($methodDictionary[$formatedRoute], array($this->request));
     }

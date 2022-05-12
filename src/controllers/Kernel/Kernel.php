@@ -2,6 +2,8 @@
 
 namespace App\Controllers\Kernel;
 
+use App\Controllers\UsersController;
+
 class Kernel
 {
     /**
@@ -19,8 +21,16 @@ class Kernel
      */
     public function register(): void
     {
-        $this->router->get('/api/test', function (Request $request) {
-            echo 'Hola Mundo';
-        });
+        $usersController = new UsersController();
+
+        $this->router->get('/', fn() => 'Hello world!');
+
+        $this->router->get('/api/users', fn(Request $request) =>
+            $usersController->index($request)
+        );
+
+        $this->router->post('/api/users', fn(Request $request) =>
+            $usersController->store($request)
+        );
     }
 }

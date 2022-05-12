@@ -146,6 +146,31 @@ class Model
     }
 
     /**
+     * Select all from tables.
+     *
+     * @param string $fields
+     * @param string $where
+     * @param array $whereValues
+     * @param string $aditional
+     * @return array
+     */
+    public function all(
+        string $fields = '*',
+        string $where = '',
+        array $whereValues = [],
+        string $aditional = ''
+    ): array
+    {
+        return $this->database->select(
+            $this->table,
+            $fields,
+            $where,
+            $whereValues,
+            $aditional
+        )->get();
+    }
+
+    /**
      * Update model.
      *
      * @param array $data
@@ -163,5 +188,15 @@ class Model
         );
 
         return $this;
+    }
+
+    /**
+     * Get model data as array
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return (array) $this->data;
     }
 }
