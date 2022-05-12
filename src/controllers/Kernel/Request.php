@@ -58,7 +58,7 @@ class Request
         }
 
         if ($this->requestMethod == "POST") {
-            $body = array();
+            $body = [];
             foreach ($_POST as $key => $value) {
                 $body[$key] = filter_input(
                     INPUT_POST,
@@ -69,5 +69,25 @@ class Request
 
             return $body;
         }
+    }
+
+    /**
+     * Get query from request
+     *
+     * @return array|null
+     */
+    public function getQuery(): ?array
+    {
+        $query = [];
+        
+        foreach ($_GET as $key => $value) {
+            $query[$key] = filter_input(
+                INPUT_GET,
+                $key,
+                FILTER_SANITIZE_SPECIAL_CHARS
+            );
+        }
+
+        return $query;
     }
 }

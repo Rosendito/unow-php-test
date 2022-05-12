@@ -4,6 +4,9 @@ namespace App\Models;
 
 class User extends Model
 {
+    const ROLE_DOCTOR = 'doctor';
+    const ROLE_PATIENT = 'patient';
+
     /**
      * Table of the entity.
      *

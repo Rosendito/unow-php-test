@@ -9,12 +9,14 @@ class Controller
     /**
      * Return json response.
      *
-     * @param array $data
+     * @param mixed $data
      * @param integer $status
      * @return string
      */
-    protected function response(array $data, int $status = 200): string
+    protected function response(mixed $data, int $status = 200): string
     {
+        http_response_code($status);
+
         return json_encode([
             'data' => $data,
             'status' => $status
