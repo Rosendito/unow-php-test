@@ -202,6 +202,29 @@ class Database
     }
 
     /**
+     * Insert statement.
+     *
+     * @param string $table
+     * @param array $data
+     * @return self
+     */
+    public function insert(string $table, array $data): void
+    {
+        $fieldNames = implode(',', array_keys($data));
+        $fieldValues = ':' . implode(', :', array_keys($data));
+
+        $query = "INSERT INTO {$table} ({$fieldNames}) VALUES ($fieldValues)";
+
+        $this->prepare($query);
+
+        foreach ($data as $key => $value) {
+            $this->bindValue(":{$key}", $value);
+        }
+
+        $this->execute();
+    }
+
+    /**
      * Get results from the current statement.
      *
      * @return array
