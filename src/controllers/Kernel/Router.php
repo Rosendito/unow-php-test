@@ -19,7 +19,7 @@ class Router
     private $supportedHttpMethods = [
         'GET',
         'POST',
-        'PATCH'
+        'PUT'
     ];
 
     /**

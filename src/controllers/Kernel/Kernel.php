@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Kernel;
 
+use App\Controllers\DoctorDatesController;
 use App\Controllers\PatientDatesController;
 use App\Controllers\UsersController;
 
@@ -24,6 +25,7 @@ class Kernel
     {
         $usersController = new UsersController();
         $patientDatesController = new PatientDatesController();
+        $doctorDatesController = new DoctorDatesController();
 
         $this->router->get('/', fn() => 'Hello world!');
 
@@ -37,6 +39,14 @@ class Kernel
 
         $this->router->post('/api/patients/dates', fn(Request $request) =>
             $patientDatesController->store($request)
+        );
+
+        $this->router->get('/api/doctors/dates', fn(Request $request) =>
+            $doctorDatesController->index($request)
+        );
+
+        $this->router->patch('/api/doctors/dates', fn(Request $request) =>
+            $doctorDatesController->update($request)
         );
     }
 }

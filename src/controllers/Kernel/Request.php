@@ -69,6 +69,17 @@ class Request
 
             return $body;
         }
+
+        if ($this->requestMethod == "PATCH") {
+            $_PATCH = (array) json_decode(file_get_contents('php://input'));
+
+            $body = [];
+            foreach ($_PATCH as $key => $value) {
+                $body[$key] = $value;
+            }
+
+            return $body;
+        }
     }
 
     /**

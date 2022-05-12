@@ -187,6 +187,8 @@ class Model
             ['id' => $this->id]
         );
 
+        $this->fillData($data);
+
         return $this;
     }
 
