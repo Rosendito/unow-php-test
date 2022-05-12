@@ -1,0 +1,172 @@
+{
+	"info": {
+		"_postman_id": "66e8f725-5377-4387-8c43-924516ea1ad7",
+		"name": "unow",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Jose",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "prueba@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "doctor",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "patient",
+			"item": [
+				{
+					"name": "Create date",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "patient_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "doctor_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "note",
+									"value": "Prueba",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/patients/dates",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"patients",
+								"dates"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "doctors",
+			"item": [
+				{
+					"name": "Index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/doctors/dates?doctor_id=2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"doctors",
+								"dates"
+							],
+							"query": [
+								{
+									"key": "doctor_id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"doctor_id\": 2,\r\n    \"date_id\": 1,\r\n    \"approved\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/doctors/dates",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"doctors",
+								"dates"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
