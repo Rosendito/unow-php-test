@@ -4,6 +4,7 @@ namespace App\Models\Database;
 
 use PDO;
 use PDOException;
+use PDOStatement;
 
 class Database
 {
@@ -41,6 +42,13 @@ class Database
      * @var PDO
      */
     private PDO $handler;
+
+    /**
+     * Current statement.
+     *
+     * @var PDOStatement
+     */
+    private PDOStatement $statement;
 
     public function __construct()
     {
@@ -84,5 +92,124 @@ class Database
             error_log('Error during PDO init. Message: ' . $error->getMessage());
             die($error);
         }
+    }
+
+    /**
+     * Prepare query.
+     *
+     * @param string $query
+     * @return void
+     */
+    public function prepare(string $query): void
+    {
+        $this->statement = $this->handler->prepare($query);
+    }
+
+    /**
+     * Get bind value type.
+     *
+     * @param mixed $value
+     * @return integer
+     */
+    public function getBindValueType(mixed $value): int
+    {
+        switch (true) {
+            case is_int($value):
+                $type = PDO::PARAM_INT;
+                break;
+            case is_bool($value):
+                $type = PDO::PARAM_BOOL;
+            case is_null($value):
+                $type= PDO::PARAM_NULL;
+            default:
+                $type = PDO::PARAM_STR;
+        }
+
+        return $type;
+    }
+
+    /**
+     * Bind value to the current statement.
+     *
+     * @param string $param
+     * @param mixed $value
+     * @return void
+     */
+    public function bindValue(string $param, mixed $value): void
+    {
+        $this->statement->bindValue(
+            $param,
+            $value,
+            $this->getBindValueType($value)
+        );
+    }
+
+    /**
+     * Bind param to the current statement.
+     *
+     * @param string $param
+     * @param mixed $value
+     * @return void
+     */
+    public function bindParam(string $param, mixed $value): void
+    {
+        $this->statement->bindParam(
+            $param,
+            $value,
+            $this->getBindValueType($value)
+        );
+    }
+
+    /**
+     * Execute the current statement.
+     *
+     * @return void
+     */
+    public function execute(): void
+    {
+        $this->statement->execute();
+    }
+
+    /**
+     * Select statement.
+     *
+     * @param string $table
+     * @param string $fields
+     * @param string $where
+     * @param array $whereValues
+     * @param string $aditional
+     * @return self
+     */
+    public function select(
+        string $table,
+        string $fields = '*',
+        string $where = '',
+        array $whereValues = [],
+        string $aditional = ''
+    ): self
+    {
+        $query = 'SELECT ' . $fields . 'FROM ' . $table
+            . ($where ? ' WHERE ' . $where : '')
+            . ($aditional ? ' ' . $aditional : '');
+
+        $this->prepare($query);
+
+        foreach ($whereValues as $param => $value) {
+            $this->bindParam($param, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get results from the current statement.
+     *
+     * @return array
+     */
+    public function get(): array
+    {
+        $this->execute();
+        
+        return $this->statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }
