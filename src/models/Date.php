@@ -23,6 +23,7 @@ class Date extends Model
     protected array $attributes = [
         'id',
         'patient_id',
+        'doctor_id',
         'note',
         'status',
         'updated_at',

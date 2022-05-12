@@ -17,10 +17,15 @@ class PatientDatesController extends Controller
     public function store(Request $request): string
     {
         $body = $request->getBody();
-        $user = (new User)->find($body['patient_id']);
+        $patient = (new User)->find($body['patient_id']);
+        $doctor = (new User)->find($body['doctor_id']);
 
-        if (!$this->validateRole($user)) {
+        if (!$patient->validateRole(User::ROLE_PATIENT)) {
             return $this->response('El usuario no tiene el rol de paciente', 403);
+        }
+
+        if (!$doctor->validateRole(User::ROLE_DOCTOR)) {
+            return $this->response('El usuario no tiene el rol de doctor', 403);
         }
 
         $body['status'] = Date::STATUS_PENDING;
@@ -28,16 +33,5 @@ class PatientDatesController extends Controller
         $date = (new Date)->create($body);
 
         return $this->response($date->toArray(), 201);
-    }
-
-    /**
-     * Validate if the user has patient role
-     *
-     * @param User $user
-     * @return boolean
-     */
-    protected function validateRole(User $user): bool
-    {
-        return $user->role === User::ROLE_PATIENT;
     }
 }

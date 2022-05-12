@@ -27,4 +27,15 @@ class User extends Model
         'updated_at',
         'created_at'
     ];
+
+    /**
+     * Valide if the current user has that role
+     *
+     * @param string $role
+     * @return boolean
+     */
+    public function validateRole(string $role): bool
+    {
+        return $this->role === $role;
+    }
 }
